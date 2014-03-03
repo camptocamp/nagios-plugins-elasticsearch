@@ -8,7 +8,6 @@ from datetime import datetime, timedelta
 from elasticsearch import Elasticsearch
 
 NAGIOS_STATUS = { "OK": 0, "WARNING": 1, "CRITICAL": 2, "UNKNOWN": 3 }
-TODAY=datetime.today().strftime("%Y.%m.%d")
 BODY_TEMPLATE = """
 {
   "facets": {
