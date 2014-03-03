@@ -66,8 +66,7 @@ try:
 
   (options, args) = parser.parse_args()
 
-  #es = Elasticsearch(ast.literal_eval(options.nodes))
-  es = Elasticsearch()
+  es = Elasticsearch(ast.literal_eval(options.nodes))
   utime = int((datetime.now() - timedelta(seconds=options.second)).strftime('%s')) * 1000
   body = json.loads(BODY_TEMPLATE % (options.query, utime))
   res = es.search(index=options.index, body=body, search_type='count')
