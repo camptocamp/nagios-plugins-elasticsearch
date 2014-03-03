@@ -17,7 +17,7 @@ Check if there are PostgreSQL events from a specific host during the last 60 sec
 License
 -------
 
-Copyright (c) 2013 All rights reserved.
+Copyright (c) Camptocamp 2013 All rights reserved.
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
