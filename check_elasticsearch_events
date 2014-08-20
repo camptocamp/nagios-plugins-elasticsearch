@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import re
 import ast
 import sys
 import json
@@ -47,7 +48,9 @@ parser.add_option("-n", "--nodes", dest="nodes", metavar="NODES",
   help="List of nodes we should connect to, see Python Elasticsearch Documentation, default [{'host': 'localhost', 'port': 9200}]")
 parser.add_option("-i", "--index", dest="index", metavar="INDEX",
   type="string", default="_all",
-  help="ES index pattern to use, default _all")
+  help="A comma-separated list of index names to search, default _all")
+parser.add_option("-p", "--index-pattern", dest="pattern", metavar="PATTERN",
+  type="string", help="ES index pattern (regular expression) to use")
 parser.add_option("-q", "--query", dest="query", metavar="QUERY",
   type="string", default="*",
   help="lucene query expression, default '*'")
@@ -67,8 +70,14 @@ try:
 
   es = Elasticsearch(ast.literal_eval(options.nodes))
   utime = int((datetime.now() - timedelta(seconds=options.second)).strftime('%s')) * 1000
+
+  if options.pattern:
+    index = ','.join([k for k in es.indices.get_aliases().keys() if re.match(options.pattern, k)])
+  else:
+    index = options.index
+
   body = json.loads(BODY_TEMPLATE % (options.query, utime))
-  res = es.search(index=options.index, body=body, search_type='count')
+  res = es.search(index=index, body=body, search_type='count')
   count = res['facets']['0']['count']
  
 except:
